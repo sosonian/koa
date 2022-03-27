@@ -33,15 +33,18 @@ socket.addEventListener('message',async(event)=>{
     {
         let cData = event.data
         let fData = JSON.parse(cData)
-        try {
-            dbConn.then(async(conn)=>{
-                conn.db('StockTrading').collection('CurrencyRate').updateOne({"ticket":fData.data[0].s},{$set:{"currentPrice":fData.data[0].p}})
-            })
-        } 
-        catch(e)
+        if(fData.data && Array.isArray(fData.data) && fData.data.length >0)
         {
-            console.log('Update Price To DB, Error Occurred !')
-            console.log(e)
+            try {
+                dbConn.then(async(conn)=>{
+                    conn.db('StockTrading').collection('CurrencyRate').updateOne({"ticket":fData.data[0].s},{$set:{"currentPrice":fData.data[0].p}})
+                })
+            } 
+            catch(e)
+            {
+                console.log('Update Price To DB, Error Occurred !')
+                console.log(e)
+            }
         }
     }
 })
