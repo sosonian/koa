@@ -1,3 +1,4 @@
+
 const {Finnhub} = require('./connectionInfo')
 const {CompanyList, CurrencyRateList} = require('./symbolList')
 
