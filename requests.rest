@@ -12,5 +12,5 @@ Content-Type: application/json
 
 ####
 
-GET http://localhost:3000/stock/test
+GET http://localhost:3000/stock/list
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBMDAxIiwidXNlck5hbWUiOiJTdXNhbiBEb3ZlbiIsImlhdCI6MTY0ODQxOTE0M30.U5uPv0e265uLm1erkMipvjaiT53xTAfHGAt2c6DESYs

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 verifyToken = async(ctx, next) =>{
+    await next()
     let authHeader = ctx.get('authorization')
     let token = authHeader && authHeader.split(' ')[1]
     if(token === null)
@@ -15,10 +16,6 @@ verifyToken = async(ctx, next) =>{
                 //console.log(err)
                 ctx.status = 403
                 ctx.body = 'Invalid loginToken'
-            }
-            else
-            {
-                await next()
             }
         })
     }

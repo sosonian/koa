@@ -8,7 +8,6 @@ const nodeProcess = require('process')
 const Koa = require('koa')
 const json = require('koa-json')
 const KoaRouter = require('koa-router')
-//const kJson = require('koa-json')
 const koaBody = require('koa-body')
 const WebSocket = require('ws')
 const { dbConn } = require('./mongoConnection')
@@ -26,7 +25,7 @@ nodeProcess.on('SIGINT',()=>{
 })
 
 socket.addEventListener('open',()=>{
-    CurrencyRateList.forEach(c=>{
+    CompanyList.forEach(c=>{
         socket.send(JSON.stringify({'type':'subscribe','symbol':c.Symbol}))
     })
 })
@@ -37,11 +36,12 @@ socket.addEventListener('message',async(event)=>{
     {
         let cData = event.data
         let fData = JSON.parse(cData)
+        console.log(fData)
         if(fData.data && Array.isArray(fData.data) && fData.data.length >0)
         {
             try {
                 dbConn.then(async(conn)=>{
-                    conn.db('StockTrading').collection('CurrencyRate').updateOne({"ticket":fData.data[0].s},{$set:{"currentPrice":fData.data[0].p}})
+                    conn.db('StockTrading').collection('CompanyProfile').updateOne({"ticker":fData.data[0].s},{$set:{"currentPrice":fData.data[0].p}})
                 })
             } 
             catch(e)
