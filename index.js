@@ -5,7 +5,7 @@ const nodeProcess = require('process')
 //let fetch = require('node-fetch')
 
 const Koa = require('koa')
-const json = require('koa-json')
+//const json = require('koa-json')
 const KoaRouter = require('koa-router')
 const WebSocket = require('ws')
 const { dbConn } = require('./mongoConnection')
@@ -53,10 +53,13 @@ socket.addEventListener('message',async(event)=>{
 const app = new Koa()
 const router = new KoaRouter()
 
-app.use(json())
+//app.use(json())
 app.use(router.routes()).use(router.allowedMethods())
 
 const test = require('./routes/test')(dbConn, router)
+const account = require('./routes/account')(dbConn, router)
+const login = require('./routes/login')(dbConn, router)
+const stock = require('./routes/stock')(dbConn, router)
 
 
 app.listen(3000, ()=> console.log('Server Started...'))
