@@ -1,0 +1,20 @@
+module.exports = {
+    MongoAtlas:{
+        Url:'cluster0.ygejl.mongodb.net',
+        Account:'sosonian',
+        Password:'IRock1234',
+        Database:'StockTrading'
+    },
+    Finnhub:{
+        Token:'c8up83qad3ibdduenmsg',
+        StockRealTimeSocket:{
+            Url:'wss://ws.finnhub.io'
+        },
+        CompanyProfile:{
+            Url:'https://finnhub.io/api/v1/stock/profile2',
+        },
+        StockLastPrice:{
+            Url:'https://finnhub.io/api/v1/quote'
+        }
+    }
+}

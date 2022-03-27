@@ -1,36 +1,43 @@
-const {MongoAtlas, Finnhub} = require('./loginInfo')
-const {CompanyList} = require('./companyList')
+const {Finnhub} = require('./connectionInfo')
+const {CompanyList, CurrencyRateList} = require('./symbolList')
 
-const Process = require('process')
+const nodeProcess = require('process')
+//let fetch = require('node-fetch')
 
 const Koa = require('koa')
 const Router = require('koa-router')
 const WebSocket = require('ws')
-const Mongoose = require('mongoose')
+//const { dbConn } = require('./mongoConnection')
+const response = require('koa/lib/response')
 
-//const socket = new WebSocket(`wss://ws.finnhub.io?token=${Finnhub.Token}`)
-Mongoose.connect(`mongodb+srv://${MongoAtlas.Account}:${MongoAtlas.Password}@${MongoAtlas.Url}/${MongoAtlas.Database}?retryWrites=true&w=majority`)
+let socketUrl = `${Finnhub.StockRealTimeSocket.Url}?token=${Finnhub.Token}`
+console.log(socketUrl)
+
+
+const socket = new WebSocket('wss://ws.finnhub.io?token=c8up83qad3ibdduenmsg')
+
+
+
 
 
 //服務中斷前先停止跟Finnhub的websocket連線
 //如果不停止直接中斷服務，服務馬上重啟的話，Finnhub 的 websocket 要等一段時間才會回應
-Process.on('SIGINT',()=>{
+nodeProcess.on('SIGINT',()=>{
     //socket.close()
     console.log('socket close...')
-    process.exit()
+    nodeProcess.exit()
 })
 
 
 
-
-
 // socket.addEventListener('open',()=>{
-//     CompanyList.forEach(c=>{
-//         socket.send(JSON.stringify({'type':'subscribe','symbol':c.Symbol}))
+//     CurrencyRateList.forEach(c=>{
+//         socket.send(JSON.stringify({'type':'subscribe','symbol':'AAPL'}))
 //     })
 // })
 
 // socket.addEventListener('message',(event)=>{
+    
 //     console.log('Message from server', event.data)
 // })
 
