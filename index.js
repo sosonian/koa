@@ -56,7 +56,7 @@ const router = new KoaRouter()
 app.use(json())
 app.use(router.routes()).use(router.allowedMethods())
 
-
+const test = require('./routes/test')(dbConn, router)
 
 
 app.listen(3000, ()=> console.log('Server Started...'))
