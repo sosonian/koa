@@ -10,6 +10,4 @@ let dbConn = new Promise(async(resolve,reject)=>{
     
 })
 
-
-
 module.exports = {dbConn}

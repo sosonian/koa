@@ -7,39 +7,44 @@ const nodeProcess = require('process')
 const Koa = require('koa')
 const Router = require('koa-router')
 const WebSocket = require('ws')
-//const { dbConn } = require('./mongoConnection')
+const { dbConn } = require('./mongoConnection')
 const response = require('koa/lib/response')
 
-let socketUrl = `${Finnhub.StockRealTimeSocket.Url}?token=${Finnhub.Token}`
-console.log(socketUrl)
-
-
-const socket = new WebSocket('wss://ws.finnhub.io?token=c8up83qad3ibdduenmsg')
-
-
-
+const socket = new WebSocket(`${Finnhub.StockRealTimeSocket.Url}?token=${Finnhub.Token}`)
 
 
 //服務中斷前先停止跟Finnhub的websocket連線
 //如果不停止直接中斷服務，服務馬上重啟的話，Finnhub 的 websocket 要等一段時間才會回應
 nodeProcess.on('SIGINT',()=>{
-    //socket.close()
+    socket.close()
     console.log('socket close...')
     nodeProcess.exit()
 })
 
+socket.addEventListener('open',()=>{
+    CurrencyRateList.forEach(c=>{
+        socket.send(JSON.stringify({'type':'subscribe','symbol':c.Symbol}))
+    })
+})
 
-
-// socket.addEventListener('open',()=>{
-//     CurrencyRateList.forEach(c=>{
-//         socket.send(JSON.stringify({'type':'subscribe','symbol':'AAPL'}))
-//     })
-// })
-
-// socket.addEventListener('message',(event)=>{
+socket.addEventListener('message',async(event)=>{
     
-//     console.log('Message from server', event.data)
-// })
+    if(event.data)
+    {
+        let cData = event.data
+        let fData = JSON.parse(cData)
+        try {
+            dbConn.then(async(conn)=>{
+                conn.db('StockTrading').collection('CurrencyRate').updateOne({"ticket":fData.data[0].s},{$set:{"currentPrice":fData.data[0].p}})
+            })
+        } 
+        catch(e)
+        {
+            console.log('Update Price To DB, Error Occurred !')
+            console.log(e)
+        }
+    }
+})
 
 const app = new Koa()
 const router = new Router()
