@@ -1,4 +1,4 @@
-
+require('dotenv').config()
 const {Finnhub} = require('./connectionInfo')
 const {CompanyList, CurrencyRateList} = require('./symbolList')
 
@@ -6,9 +6,9 @@ const nodeProcess = require('process')
 //let fetch = require('node-fetch')
 
 const Koa = require('koa')
-//const json = require('koa-json')
+const json = require('koa-json')
 const KoaRouter = require('koa-router')
-const kJson = require('koa-json')
+//const kJson = require('koa-json')
 const koaBody = require('koa-body')
 const WebSocket = require('ws')
 const { dbConn } = require('./mongoConnection')
@@ -57,7 +57,7 @@ const app = new Koa()
 const router = new KoaRouter()
 
 
-//app.use(kJson())
+app.use(json())
 app.use(koaBody())
 app.use(router.routes()).use(router.allowedMethods())
 

@@ -1,4 +1,5 @@
 const { HeaderForCORS} = require('../middleware/corsHeader')
+const jwt = require('jsonwebtoken')
 
 module.exports = function(dbConn, router) {
     router.use(HeaderForCORS)
@@ -6,31 +7,51 @@ module.exports = function(dbConn, router) {
     router
         .get('/login/test', ctx=>(ctx.body = 'Login Test'))
 
-        .post('/login/', ctx=>{
-            //console.log('login')
-            //console.log(ctx.request.body)
+        .post('/login', async(ctx, next)=>{
             let account = ctx.request.body.account
             let password = ctx.request.body.password
             let resMsg = ''
 
             if(account && password)
             {
-                dbConn.then(async(conn)=>{
-                    let result = await conn.db('StockTrading').collection('Account').findOne({"account":account, "password":password})
-                    
-                    if(result.account)
-                    {
-                        
+                console.log('A')
+                let fResult = await dbConn.then(async(conn)=>{
+                    try {
+                        let result = await conn.db('StockTrading').collection('Account').findOne({"account":account, "password":password})
+                           
+                        if(result && result !== null && result.account)
+                        {
+                            return {status:200, msg:result}
+                        }
+                        else
+                        {
+                           return {status:404, msg:'incorrect acccount or password'}
+                        }
                     }
-                    else
-                    {
-                        ctx.status = 404
-                        ctx.body = "incorrect account or password"
+                    catch (e){
+                        console.log(e)
+                        return {status:500, msg:'db error'}
+
                     }
                 })
-            }
+
+                console.log(fResult)
+                if(fResult.status === 200)
+                {
+                    let payload = {accountID:fResult.msg.accountID, userName:fResult.msg.name}
+                    let accessToken = jwt.sign(payload, process.env.ACCESS_HASH_KEY)
+
+                    ctx.body = {accessToken:accessToken}
+                }
+                else
+                {
+                    ctx.status = fResult.status
+                    ctx.body = fResult.msg
+                }
+            }            
             else
             {
+                console.log('B')
                 ctx.status = 400
                 if(!account )
                 {
@@ -45,8 +66,6 @@ module.exports = function(dbConn, router) {
                 ctx.body = resMsg
             }
         })
-
-    
 
     return router
 }
