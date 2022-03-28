@@ -11,9 +11,9 @@ module.exports = function(dbConn, router) {
     router.use(HeaderForCORS)
 
     router
-        .get('/login/test', ctx=>(ctx.body = 'Login Test'))
+        .get('/api/login/test', ctx=>(ctx.body = 'Login Test'))
 
-        .post('/login', async(ctx, next)=>{
+        .post('/api/login', async(ctx, next)=>{
             console.log('login')
             //let verificationStatus = ctx.response.get('Verification-Status')
             //let verificationBody = ctx.response.get('Verification-Body')

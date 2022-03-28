@@ -9,8 +9,8 @@ module.exports = function(dbConn, router) {
     router.use(HeaderForCORS)
     router.use(verifyToken)
 
-    router.get('/account/test', ctx=>(ctx.body = 'Account Test'))
-    .get('/account/profile', async(ctx, next)=>{
+    router.get('/api/account/test', ctx=>(ctx.body = 'Account Test'))
+    .get('/api/account/profile', async(ctx, next)=>{
         console.log('/account/profile')
         let accountID = ctx.response.get('User-AccountID')
         let verificationStatus = ctx.response.get('Verification-Status')

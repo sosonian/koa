@@ -10,8 +10,8 @@ module.exports = function(dbConn, router) {
 
 
     // 取得股票清單 API
-    router.get('/stock/test', ctx=>(ctx.body = 'Stock Test'))
-    .get('/stock/list', async(ctx, next)=>{
+    router.get('/api/stock/test', ctx=>(ctx.body = 'Stock Test'))
+    .get('/api/stock/list', async(ctx, next)=>{
         //console.log('/stock/list')
 
         let verificationStatus = ctx.response.get('Verification-Status')
@@ -55,7 +55,7 @@ module.exports = function(dbConn, router) {
     })
 
     // 取得單一個股詳細資訊 API
-    .get('/stock/detail/:symbol', async(ctx, next)=>{
+    .get('/api/stock/detail/:symbol', async(ctx, next)=>{
         console.log('/stock/detail/:symbol')
         let symbol = ctx.params.symbol
         let fResult = await dbConn.then(async(conn)=>{
@@ -89,7 +89,7 @@ module.exports = function(dbConn, router) {
     })
 
     // 單一個股交易 API
-    .post('/stock/trade', async(ctx, next)=>{
+    .post('/api/stock/trade', async(ctx, next)=>{
         console.log('/stock/trade')
         let symbol = ctx.request.body.symbol
         let tradeUnit = ctx.request.body.tradeUnit
