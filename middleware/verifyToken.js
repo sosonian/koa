@@ -1,23 +1,37 @@
 const jwt = require('jsonwebtoken')
 
+let accountID = ''
+
 verifyToken = async(ctx, next) =>{
-    await next()
+    let msg = {}
+    
     let authHeader = ctx.get('authorization')
     let token = authHeader && authHeader.split(' ')[1]
-    if(token === null)
+    if(token === null || token === '' )
     {
-        ctx.status = 401
-        ctx.body = 'No loginToken'
+        msg= {status:401, body:'No LoginToken' }
     }
     else
     {
-        jwt.verify(token, process.env.ACCESS_HASH_KEY, async(err, payload)=>{
-            if(err){
-                //console.log(err)
-                ctx.status = 403
-                ctx.body = 'Invalid loginToken'
+        jwt.verify(token, process.env.ACCESS_HASH_KEY, function(err, decoded) {
+            if(err){msg= {status:403, body:'Invalid loginToken' }}
+            else
+            {
+                accountID = decoded.accountID
             }
-        })
+        });
+    }
+
+    ctx.set('User-AccountID',accountID)
+
+    if(msg.status)
+    {
+        ctx.status = msg.status
+        ctx.body = msg.body
+    }
+    else
+    {
+        await next()
     }
 }
 

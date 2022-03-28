@@ -14,3 +14,32 @@ Content-Type: application/json
 
 GET http://localhost:3000/stock/list
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBMDAxIiwidXNlck5hbWUiOiJTdXNhbiBEb3ZlbiIsImlhdCI6MTY0ODQxOTE0M30.U5uPv0e265uLm1erkMipvjaiT53xTAfHGAt2c6DESYs
+
+####
+
+GET http://localhost:3000/stock/detail/AAPL
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBMDAxIiwidXNlck5hbWUiOiJTdXNhbiBEb3ZlbiIsImlhdCI6MTY0ODQxOTE0M30.U5uPv0e265uLm1erkMipvjaiT53xTAfHGAt2c6DESYs
+
+
+####
+
+POST http://localhost:3000/stock/trade
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBMDAxIiwidXNlck5hbWUiOiJTdXNhbiBEb3ZlbiIsImlhdCI6MTY0ODQxOTE0M30.U5uPv0e265uLm1erkMipvjaiT53xTAfHGAt2c6DESYs
+Content-Type: application/json
+
+{
+    "symbol":"aapl",
+    "tradeUnit":"677",
+    "method":"buy"
+}
+
+
+####
+POST http://localhost:3000/stock/trade
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBMDAxIiwidXNlck5hbWUiOiJTdXNhbiBEb3ZlbiIsImlhdCI6MTY0ODQxOTE0M30.U5uPv0e265uLm1erkMipvjaiT53xTAfHGAt2c6DESYs
+Content-Type: application/json
+
+{
+    "symbol":"AAPL",
+    "tradeUnit":"0.2"
+}
