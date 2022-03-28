@@ -11,6 +11,7 @@ const {LoginKey} =require('../connectionInfo')
 let accountID = ''
 
 verifyToken = async(ctx, next) =>{
+    //console.log('verify')
     let msg = {}
     
     let authHeader = ctx.get('authorization')

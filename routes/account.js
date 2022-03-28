@@ -1,6 +1,6 @@
 
 
-//------------------------ 使用者帳戶查詢 ------------------------------------
+
 
 const { HeaderForCORS} = require('../middleware/corsHeader')
 const { verifyToken } = require('../middleware/verifyToken')
@@ -11,6 +11,7 @@ module.exports = function(dbConn, router) {
 
     router.get('/account/test', ctx=>(ctx.body = 'Account Test'))
     .get('/account/profile', async(ctx, next)=>{
+        console.log('/account/profile')
         let accountID = ctx.response.get('User-AccountID')
                      
         let fResult = await dbConn.then(async(conn)=>{

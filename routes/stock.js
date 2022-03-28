@@ -12,6 +12,7 @@ module.exports = function(dbConn, router) {
     // 取得股票清單 API
     router.get('/stock/test', ctx=>(ctx.body = 'Stock Test'))
     .get('/stock/list', async(ctx, next)=>{
+        console.log('/stock/list')
                      
         let fResult = await dbConn.then(async(conn)=>{
             try {
@@ -46,6 +47,7 @@ module.exports = function(dbConn, router) {
 
     // 取得單一個股詳細資訊 API
     .get('/stock/detail/:symbol', async(ctx, next)=>{
+        console.log('/stock/detail/:symbol')
         let symbol = ctx.params.symbol
         let fResult = await dbConn.then(async(conn)=>{
             try {
@@ -79,7 +81,7 @@ module.exports = function(dbConn, router) {
 
     // 單一個股交易 API
     .post('/stock/trade', async(ctx, next)=>{
-
+        console.log('/stock/trade')
         let symbol = ctx.request.body.symbol
         let tradeUnit = ctx.request.body.tradeUnit
         let method = ctx.request.body.method

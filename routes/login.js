@@ -1,18 +1,20 @@
 
 
-//-------------------------使用者登入---------------------------------
+
 
 const { HeaderForCORS} = require('../middleware/corsHeader')
 const jwt = require('jsonwebtoken')
 const {LoginKey} =require('../connectionInfo')
 
 module.exports = function(dbConn, router) {
+
     router.use(HeaderForCORS)
 
     router
         .get('/login/test', ctx=>(ctx.body = 'Login Test'))
 
         .post('/login', async(ctx, next)=>{
+            console.log('login')
             let account = ctx.request.body.account
             let password = ctx.request.body.password
             let resMsg = ''
@@ -20,6 +22,7 @@ module.exports = function(dbConn, router) {
             if(account && password)
             {
                 console.log('A')
+                
                 let fResult = await dbConn.then(async(conn)=>{
                     try {
                         let result = await conn.db('StockTrading').collection('Account').findOne({"account":account, "password":password})
@@ -70,6 +73,8 @@ module.exports = function(dbConn, router) {
 
                 ctx.body = resMsg
             }
+
+            console.log(ctx.body)
         })
 
     return router
