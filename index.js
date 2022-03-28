@@ -43,7 +43,7 @@ socket.addEventListener('message',async(event)=>{
     {
         let cData = event.data
         let fData = JSON.parse(cData)
-        //console.log(fData)
+        console.log(fData)
         if(fData.data && Array.isArray(fData.data) && fData.data.length >0)
         {
             try {
