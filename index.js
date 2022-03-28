@@ -3,16 +3,17 @@ const {Finnhub} = require('./connectionInfo')
 const {CompanyList, CurrencyRateList} = require('./symbolList')
 
 const nodeProcess = require('process')
-//let fetch = require('node-fetch')
 
 const Koa = require('koa')
 const json = require('koa-json')
 const KoaRouter = require('koa-router')
 const koaBody = require('koa-body')
 const WebSocket = require('ws')
-const { dbConn } = require('./mongoConnection')
-const response = require('koa/lib/response')
 
+//資料庫連線另外 wrapper 成一個 promise，方便各 route 模組使用
+const { dbConn } = require('./mongoConnection')
+
+//使用websocket跟 第三方服務連接，取的即時報價。
 const socket = new WebSocket(`${Finnhub.StockRealTimeSocket.Url}?token=${Finnhub.Token}`)
 
 
@@ -24,12 +25,16 @@ nodeProcess.on('SIGINT',()=>{
     nodeProcess.exit()
 })
 
+//-----------------   WebSocket 設定 event --------------------------------------------------
+
 socket.addEventListener('open',()=>{
     CompanyList.forEach(c=>{
         socket.send(JSON.stringify({'type':'subscribe','symbol':c.Symbol}))
     })
 })
 
+
+    //這邊設定當 websocket 有一檔股票報價更新時，即更新資料庫
 socket.addEventListener('message',async(event)=>{
     
     if(event.data)
@@ -52,6 +57,8 @@ socket.addEventListener('message',async(event)=>{
         }
     }
 })
+
+//--------------------------------------------------------------------------
 
 const app = new Koa()
 const router = new KoaRouter()

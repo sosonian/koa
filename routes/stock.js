@@ -1,3 +1,6 @@
+
+//----------------------------------------股票資料取得、股票買賣------------------
+
 const { HeaderForCORS} = require('../middleware/corsHeader')
 const { verifyToken } = require('../middleware/verifyToken')
 
@@ -5,6 +8,8 @@ module.exports = function(dbConn, router) {
     router.use(HeaderForCORS)
     router.use(verifyToken)
 
+
+    // 取得股票清單 API
     router.get('/stock/test', ctx=>(ctx.body = 'Stock Test'))
     .get('/stock/list', async(ctx, next)=>{
                      
@@ -39,6 +44,7 @@ module.exports = function(dbConn, router) {
         }
     })
 
+    // 取得單一個股詳細資訊 API
     .get('/stock/detail/:symbol', async(ctx, next)=>{
         let symbol = ctx.params.symbol
         let fResult = await dbConn.then(async(conn)=>{
@@ -71,6 +77,7 @@ module.exports = function(dbConn, router) {
         }
     })
 
+    // 單一個股交易 API
     .post('/stock/trade', async(ctx, next)=>{
 
         let symbol = ctx.request.body.symbol
@@ -177,6 +184,8 @@ module.exports = function(dbConn, router) {
         }
     })
 
+    // 同時從資料庫取得使用者帳戶資料跟各股資料
+
     async function getAccountBalanceAndStockPrice (accountID, symbol) {
         
         let account = new Promise(async(resolve,reject)=>{
@@ -226,29 +235,31 @@ module.exports = function(dbConn, router) {
         return [aData, cPrice]      
     }
 
+
+    // 判斷交易無問題後,進行帳戶更新
+
     async function updateAccountBalanceAndStockPrice (accountID, fBalance, fHoldingStock) {
         
-        //let accountUpdateResult = new Promise(async(resolve,reject)=>{
-            let aResult = await dbConn.then(async(conn)=>{
-                try {
-                    let bResult = await conn.db('StockTrading').collection('Account').updateOne({accountID:accountID},{$set:{balance:fBalance,holdingStock:fHoldingStock}})
-                    if(bResult && bResult !== null)
-                    {
+        let aResult = await dbConn.then(async(conn)=>{
+            try {
+                let bResult = await conn.db('StockTrading').collection('Account').updateOne({accountID:accountID},{$set:{balance:fBalance,holdingStock:fHoldingStock}})
+                if(bResult && bResult !== null)
+                {
 
-                        return {status:200, msg:'update account success'}
-                    }
-                    else
-                    {
-                        return {status:404, msg:'Update DB Failed'}
-                    }
+                    return {status:200, msg:'update account success'}
                 }
-                catch (e){
-                    console.log(e)
-                    return {status:500, msg:'db error'}
+                else
+                {
+                    return {status:404, msg:'Update DB Failed'}
                 }
-            })
-            //resolve(aResult)
-        //})
+            }
+            catch (e){
+                console.log(e)
+                return {status:500, msg:'db error'}
+            }
+        })
+        
+        // 預計還有一隻使用者交易紀錄API要做，但沒時間。這邊是本來當帳戶更新後，就call資料庫 insert此筆交易紀錄
 
         // let companyPrice = new Promise(async(resolve,reject)=>{
         //     let qResult = await dbConn.then(async(conn)=>{
