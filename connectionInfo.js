@@ -16,5 +16,6 @@ module.exports = {
         StockLastPrice:{
             Url:'https://finnhub.io/api/v1/quote'
         }
-    }
+    },
+    LoginKey:'staygold'
 }
