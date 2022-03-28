@@ -7,6 +7,7 @@
 
 
 const jwt = require('jsonwebtoken')
+const {LoginKey} =require('../connectionInfo')
 let accountID = ''
 
 verifyToken = async(ctx, next) =>{
@@ -20,7 +21,7 @@ verifyToken = async(ctx, next) =>{
     }
     else
     {
-        jwt.verify(token, process.env.ACCESS_HASH_KEY, function(err, decoded) {
+        jwt.verify(token, LoginKey, function(err, decoded) {
             if(err){msg= {status:403, body:'Invalid loginToken' }}
             else
             {

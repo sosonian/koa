@@ -4,6 +4,7 @@
 
 const { HeaderForCORS} = require('../middleware/corsHeader')
 const jwt = require('jsonwebtoken')
+const {LoginKey} =require('../connectionInfo')
 
 module.exports = function(dbConn, router) {
     router.use(HeaderForCORS)
@@ -43,7 +44,7 @@ module.exports = function(dbConn, router) {
                 if(fResult.status === 200)
                 {
                     let payload = {accountID:fResult.msg.accountID, userName:fResult.msg.name}
-                    let accessToken = jwt.sign(payload, process.env.ACCESS_HASH_KEY)
+                    let accessToken = jwt.sign(payload, LoginKey)
 
                     ctx.body = {accessToken:accessToken}
                 }
