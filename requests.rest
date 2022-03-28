@@ -1,4 +1,4 @@
-GET http://localhost:3000/login/test
+GET http://localhost:3000/test
 
 ####
 

@@ -2,6 +2,8 @@ require('dotenv').config()
 const {Finnhub} = require('./connectionInfo')
 const {CompanyList, CurrencyRateList} = require('./symbolList')
 
+let port = process.env.PORT || 3000
+
 const nodeProcess = require('process')
 
 const Koa = require('koa')
@@ -74,4 +76,4 @@ const login = require('./routes/login')(dbConn, router)
 const stock = require('./routes/stock')(dbConn, router)
 
 
-app.listen(3000, ()=> console.log('Server Started...'))
+app.listen(port, ()=> console.log('Server Started...'))
