@@ -28,8 +28,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBM
 Content-Type: application/json
 
 {
-    "symbol":"aapl",
-    "tradeUnit":"677",
+    "symbol":"FB",
+    "tradeUnit":"0.1",
     "method":"buy"
 }
 
@@ -40,6 +40,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiJBM
 Content-Type: application/json
 
 {
-    "symbol":"AAPL",
-    "tradeUnit":"0.2"
+    "symbol":"FB",
+    "tradeUnit":"0.01",
+    "method":"sell"
 }
