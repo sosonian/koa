@@ -15,6 +15,9 @@ module.exports = function(dbConn, router) {
 
         .post('/login', async(ctx, next)=>{
             console.log('login')
+            //let verificationStatus = ctx.response.get('Verification-Status')
+            //let verificationBody = ctx.response.get('Verification-Body')
+
             let account = ctx.request.body.account
             let password = ctx.request.body.password
             let resMsg = ''

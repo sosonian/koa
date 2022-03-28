@@ -12,7 +12,16 @@ module.exports = function(dbConn, router) {
     // 取得股票清單 API
     router.get('/stock/test', ctx=>(ctx.body = 'Stock Test'))
     .get('/stock/list', async(ctx, next)=>{
-        console.log('/stock/list')
+        //console.log('/stock/list')
+
+        let verificationStatus = ctx.response.get('Verification-Status')
+        let verificationBody = ctx.response.get('Verification-Body')
+
+        if(Number(verificationStatus) !== 200)
+        {
+            ctx.status = verificationStatus
+            ctx.body = verificationBody
+        }
                      
         let fResult = await dbConn.then(async(conn)=>{
             try {

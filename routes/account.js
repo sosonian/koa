@@ -13,6 +13,14 @@ module.exports = function(dbConn, router) {
     .get('/account/profile', async(ctx, next)=>{
         console.log('/account/profile')
         let accountID = ctx.response.get('User-AccountID')
+        let verificationStatus = ctx.response.get('Verification-Status')
+        let verificationBody = ctx.response.get('Verification-Body')
+
+        if(Number(verificationStatus) !== 200)
+        {
+            ctx.status = verificationStatus
+            ctx.body = verificationBody
+        }
                      
         let fResult = await dbConn.then(async(conn)=>{
             try {
